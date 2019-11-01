@@ -4,8 +4,10 @@
 # Dependency directory
 node_modules
 bower_components
+package-lock.json
 
 # Editors
+.vscode
 .idea
 *.iml
 

@@ -9,23 +9,23 @@ import UserRepository from '../schemas/user.schema';
 class UserService {
 
     /**
-     * @description Fetches single user from the storage by email
-     * @param email
+     * @description Fetches single user from the storage by id
+     * @param {string} id
      * @returns {Promise<User>}
      */
-    async findByEmail(email): Promise<User> {
-        const user: User = await UserRepository.findOne({ email: email });
+    async findById(id: string): Promise<User> {
+        const user: User = await UserRepository.findOne({ id: id });
         return user;
     }
 
     /**
-     * @description Fetches single user from the storage by email or username
-     * @param username
-     * @param email
+     * @description Fetches single user from the storage by email or name
+     * @param {string} name
+     * @param {string} email
      * @returns {Promise<User>}
      */
-    async findByUsernameOrEmail(username, email): Promise<User> {
-        const user: User = await UserRepository.findOne({ $or: [{ email: email }, { username: username }] });
+    async findByNameOrEmail(name: string, email: string): Promise<User> {
+        const user: User = await UserRepository.findOne({ $or: [{ email: email }, { name: name }] });
         return user;
     }
 
@@ -60,8 +60,8 @@ class UserService {
      * @description Deletes a single user from storage
      * @returns {Promise<object>}
      */
-    async deleteOne(username: string): Promise<object> {
-        return await UserRepository.deleteOne({ username: username });
+    async deleteOne(id: string): Promise<object> {
+        return await UserRepository.deleteOne({ id: id });
     }
 
     /**

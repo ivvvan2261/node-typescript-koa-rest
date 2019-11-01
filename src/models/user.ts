@@ -1,24 +1,24 @@
-import { AuthToken } from './auth-token';
-import { Profile } from './profile';
+import { Length, IsEmail } from 'class-validator';
 
-export interface User {
+export class User {
+    id: string;
 
-    email?: string;
-    username?: string;
-    password?: string;
-    role?: string;
+    @Length(10, 80)
+    name: string;
 
-    active?: boolean;
+    @Length(10, 100)
+    @IsEmail()
+    email: string;
 
-    passwordResetToken?: string;
-    passwordResetExpires?: Date;
-
-    activationToken?: string;
-    activationExpires?: Date;
-
-    tokens?: Array<AuthToken>;
-
-    profile?: Profile;
+    @Length(6, 20)
+    password: string;
 
     comparePassword?: (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
 }
+
+export const userSchema = {
+    id: { type: 'string', required: true, example: '111111' },
+    name: { type: 'string', required: true, example: 'Javier' },
+    password: { type: 'string', required: true, example: '123.com' },
+    email: { type: 'string', required: true, example: 'avileslopez.javier@gmail.com' }
+};

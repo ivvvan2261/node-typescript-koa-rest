@@ -1,28 +1,9 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt-nodejs';
 import * as util from 'util';
-import { User } from '../models/user';
+import { User, userSchema } from '../models/user';
 
-const UserSchema = new mongoose.Schema({
-    email: { type: String, unique: true },
-    username: String,
-    password: String,
-    role: String,
-
-    active: Boolean,
-
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-
-    activationToken: String,
-    activationExpires: Date,
-
-    profile: {
-        fname: String,
-        lname: String,
-        info: String
-    }
-}, { timestamps: true });
+const UserSchema = new mongoose.Schema(userSchema, { timestamps: true });
 
 /**
  * Password hash middleware.
