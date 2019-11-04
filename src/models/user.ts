@@ -6,12 +6,12 @@ export class User {
     @Length(10, 80)
     name: string;
 
+    @Length(6, 20)
+    password: string;
+
     @Length(10, 100)
     @IsEmail()
     email: string;
-
-    @Length(6, 20)
-    password: string;
 
     comparePassword?: (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
 }

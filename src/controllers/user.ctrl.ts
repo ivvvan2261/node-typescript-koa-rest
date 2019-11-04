@@ -49,6 +49,7 @@ export default class UserController {
         const userToBeSaved: User = new User();
         userToBeSaved.id = uuid.v1();
         userToBeSaved.name = ctx.request.body.name;
+        userToBeSaved.password = ctx.request.body.password;
         userToBeSaved.email = ctx.request.body.email;
 
         // validate user entity

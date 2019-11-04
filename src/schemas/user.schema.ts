@@ -3,24 +3,19 @@ import * as bcrypt from 'bcrypt-nodejs';
 import * as util from 'util';
 import { User, userSchema } from '../models/user';
 
+type UserModel = User & mongoose.Document;
 const UserSchema = new mongoose.Schema(userSchema, { timestamps: true });
 
 /**
  * Password hash middleware.
  */
-UserSchema.pre('save', (next) => {
-    const user = this;
-    if (!user.isModified('password')) {
-        return next();
-    }
+UserSchema.pre('save', function save(next) {
+    const user = this as UserModel;
+    if (!user.isModified('password')) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err); }
         bcrypt.hash(user.password, salt, undefined, (err: mongoose.Error, hash) => {
-            if (err) {
-                return next(err);
-            }
+            if (err) { return next(err); }
             user.password = hash;
             next();
         });
@@ -32,6 +27,5 @@ UserSchema.methods.comparePassword = function (candidatePassword: string) {
     return qCompare(candidatePassword, this.password);
 };
 
-type UserModel = User & mongoose.Document;
 const UserRepository = mongoose.model<UserModel>('User', UserSchema);
 export default UserRepository;
