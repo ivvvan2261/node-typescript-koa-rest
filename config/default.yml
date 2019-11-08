@@ -1,0 +1,15 @@
+ports:
+  http: 8080
+
+auth:
+  jwt_secret: 'your-secret-whatever'
+
+mongo:
+  url: 'mongodb://mongo:27017'
+
+# none/debug/info
+loglevel: debug
+
+errors:
+  'unexpected error': 9001
+  'parameter error': 1001

@@ -1,10 +1,8 @@
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '.example.env' });
+import Config from 'config';
 
 export interface IConfig {
     port: number;
-    debugLogging: boolean;
+    loglevel: string;
     dbsslconn: boolean;
     jwtSecret: string;
     databaseUrl: string;
@@ -14,11 +12,11 @@ export interface IConfig {
 const isDevMode = process.env.NODE_ENV == 'development';
 
 const config: IConfig = {
-    port: +process.env.PORT || 3000,
-    debugLogging: isDevMode,
+    port: Config.get('ports.http') || 3000,
+    loglevel: Config.get('loglevel'),
     dbsslconn: !isDevMode,
-    jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
-    databaseUrl: process.env.DATABASE_URL || 'mongodb://user:pass@localhost:27017/apidb',
+    jwtSecret: Config.get('auth.jwt_secret').toString() || 'your-secret-whatever',
+    databaseUrl: Config.get('mongo.url').toString() || 'mongodb://user:pass@localhost:27017/apidb',
     cronJobExpression: '0 * * * *'
 };
 

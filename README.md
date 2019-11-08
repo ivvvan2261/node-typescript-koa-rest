@@ -1,12 +1,6 @@
 # Node - Koa - Typescript Project
 
-
-[![NPM version](https://img.shields.io/npm/v/node-typescript-koa-rest.svg)](https://www.npmjs.com/package/node-typescript-koa-rest)
-[![Dependency Status](https://david-dm.org/javieraviles/node-typescript-koa-rest.svg)](https://david-dm.org/javieraviles/node-typescript-koa-rest)
-[![Actions Status](https://github.com/javieraviles/node-typescript-koa-rest/workflows/test/badge.svg)](https://github.com/javieraviles/node-typescript-koa-rest/actions)
-
-
-The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA and an SQL DB.
+The main purpose of this repository is to show a good end-to-end project setup and workflow for writing Node code in TypeScript using KOA and a NOSQL DB.
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
@@ -19,7 +13,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
 
 AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
 
-When running the project locally with `watch-server`, being `.env` file config the very same as `.example.env` file, the swagger docs will be deployed at: `http:localhost:3000/swagger-html`, and the bearer token for authorization should be as follows:
+When running the project locally with `watch-server`, the swagger docs will be deployed at: `http:localhost:3000/swagger-html`, and the bearer token for authorization should be as follows:
 
 HEADER (LOCALHOST BASED ON DEFAULT SECRET KEY 'your-secret-whatever')
 ```
@@ -35,13 +29,13 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
 | `PUT`              | `/users/:id`     | updates an already created user in the DB (object user to be includued in request's body)      |
 | `DELETE`           | `/users/:id`     | deletes a user from the DB (JWT token user ID must be the same as the user you want to delete) |
 
+# Table of contents:
 - [Node - Koa - Typescript Project](#node---koa---typescript-project)
   - [Pre-reqs](#pre-reqs)
   - [Features:](#features)
   - [Included middleware:](#included-middleware)
 - [Getting Started](#getting-started)
   - [Docker (optional)](#docker-optional)
-  - [Setting up the Database - ORM](#setting-up-the-database---orm)
   - [Entities validation](#entities-validation)
   - [Environment variables](#environment-variables)
   - [Getting TypeScript](#getting-typescript)
@@ -61,25 +55,16 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
 - [Dependencies](#dependencies)
   - [dependencies](#dependencies)
   - [devDependencies](#devdependencies)
-  - [Changelog](#changelog)
-    - [1.6.0](#160)
-    - [1.5.0](#150)
-    - [1.4.2](#142)
-    - [1.4.1](#141)
-    - [1.4.0](#140)
-    - [1.3.0](#130)
-    - [1.2.0](#120)
-    - [1.1.0](#110)
 
-
-## Pre-reqs
-To build and run this app locally you will need:
+# Pre-reqs
+To build and run this app locally you will need a few things:
 - Install [Node.js](https://nodejs.org/en/)
+- Install [MongoDB](https://docs.mongodb.com/manual/installation/)
+- Install [VS Code](https://code.visualstudio.com/)
 
-## Features:
+# Features:
  * Nodemon - server auto-restarts when code changes
  * Koa v2
- * TypeORM (SQL DB) with basic CRUD included
  * Swagger decorator (auto generated swagger docs)
  * Class-validator - Decorator based entities validation
  * Docker-compose ready to go
@@ -88,7 +73,7 @@ To build and run this app locally you will need:
  * Github actions - CI for building and testing the project
  * Cron jobs prepared
 
-## Included middleware:
+# Included middleware:
  * koa-router
  * koa-bodyparser
  * Winston Logger
@@ -106,17 +91,34 @@ git clone --depth=1 https://github.com/javieraviles/node-typescript-koa-rest.git
 cd <project_name>
 npm install
 ```
+- Configure your mongoDB server
+```bash
+# create the db directory
+sudo mkdir -p /data/db
+# give the db correct read/write permissions
+sudo chmod 777 /data/db
+
+# starting from macOS 10.15 even the admin cannot create directory at root
+# so lets create the db diretory under the home directory.
+mkdir -p ~/data/db
+# user account has automatically read and write permissions for ~/data/db.
+```
+- Start your mongoDB server (you'll probably want another command prompt)
+```bash
+mongod
+
+# on macOS 10.15 or above the db directory is under home directory
+mongod --dbpath ~/data/db
+```
 - Run the project directly in TS
 ```
 npm run watch-server
 ```
-
 - Build and run the project in JS
 ```
 npm run build
 npm run start
 ```
-
 - Run integration or load tests
 ```
 npm run test:integration
@@ -129,40 +131,6 @@ A docker-compose file has been added to the project with a postgreSQL (already s
 It is as easy as go to the project folder and execute the command 'docker-compose up' once you have Docker installed, and both the postgreSQL server and the Adminer client will be running in ports 5432 and 8080 respectively with all the config you need to start playing around. 
 
 If you use Docker natively, the host for the server which you will need to include in the ORM configuration file will be localhost, but if you were to run Docker in older Windows versions, you will be using Boot2Docker and probably your virtual machine will use your ip 192.168.99.100 as network adapter. This mean your database host will be the aforementioned ip and in case you want to access the web db client you will also need to go to http://19.168.99.100/8080
-
-## Setting up the Database - ORM
-This API is prepared to work with an SQL database, using [TypeORM](https://github.com/typeorm/typeorm). In this case we are using postgreSQL, and that is why in the package.json 'pg' has been included. If you where to use a different SQL database remember to install the correspondent driver.
-
-The ORM configuration and connection to the database can be specified in the file 'ormconfig.json'. Here is directly in the connection to the database in 'server.ts' file because a environment variable containing databaseUrl is being used to set the connection data. This is prepared for Heroku, which provides a postgres-string-connection as env variable. In local is being mocked with the docker local postgres as can be seen in ".example.env"
-
-It is importante to notice that, when serving the project directly with *.ts files using ts-node,the configuration for the ORM should specify the *.ts files path, but once the project is built (transpiled) and run as plain js, it will be needed to change it accordingly to find the built js files:
-
-```
-"entities": [
-      "dist/entity/**/*.js"
-   ],
-   "migrations": [
-      "dist/migration/**/*.js"
-   ],
-   "subscribers": [
-      "dist/subscriber/**/*.js"
-   ]
-```
-
-**NOTE: this is now automatically handled by the NODE_ENV variable too. 
-
-Notice that if NODE_ENV is set to development, the ORM config won't be using SSL to connect to the DB. Otherwise it will.
-
-```
-createConnection({
-    ...
-    extra: {
-        ssl: config.DbSslConn, // if not development, will use SSL
-    }
- })
-```
-
-You can find an implemented **CRUD of the entity user** in the correspondent controller controller/user.ts and its routes in routes.ts file.
 
 ## Entities validation
 This project uses the library class-validator, a decorator-based entity validation, which is used directly in the entities files as follows:
@@ -189,7 +157,6 @@ validate(user).then(errors => { // errors is an array of validation errors
 ```
 
 For further documentation regarding validations see [class-validator docs](https://github.com/typestack/class-validator).
-
 
 ## Environment variables
 Create a .env file (or just rename the .example.env) containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
@@ -264,8 +231,6 @@ Let's dissect this project's `tsconfig.json`, starting with the `compilerOptions
 | `"experimentalDecorators": true`   | Needed for TypeORM. Allows use of @Decorators                   |
 | `"emitDecoratorMetadata": true`    | Needed for TypeORM. Allows use of @Decorators                   |
 
-
-
 The rest of the file define the TypeScript project context.
 The project context is basically a set of options that determine which files are compiled when the compiler is invoked with a specific `tsconfig.json`.
 In this case, we use the following to define our project context: 
@@ -279,7 +244,6 @@ This project is fairly simple and all of our .ts files are under the `src` folde
 For more complex setups, you can include an `exclude` array of glob patterns that removes specific files from the set defined with `include`.
 There is also a `files` option which takes an array of individual file names which overrides both `include` and `exclude`.
 
-
 ## Running the build
 All the different build steps are orchestrated via [npm scripts](https://docs.npmjs.com/misc/scripts).
 Npm scripts basically allow us to call (and chain) terminal commands via npm.
@@ -288,7 +252,6 @@ If you open `package.json`, you will see a `scripts` section with all the differ
 To call a script, simply run `npm run <script-name>` from the command line.
 You'll notice that npm scripts can call each other which makes it easy to compose complex builds out of simple individual build scripts.
 Below is a list of all the scripts this template has available:
-
 
 | Npm Script | Description |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -378,11 +341,11 @@ Load tests are a locust file with assertions, which gets executed from the CI (G
 # Logging
 Winston is designed to be a simple and universal logging library with support for multiple transports.
 
-A "logger" middleware passing a winstonInstance has been created. Current configuration of the logger can be found in the file "logging.ts". It will log 'error' level to an error.log file and 'debug' or 'info' level (depending on NODE_ENV environment variable, debug if == development) to the console.
+A "logger" middleware passing a winstonInstance has been created. Current configuration of the logger can be found in the file "logger.ts". It will log 'error' level to an error.log file and 'debug' or 'info' level to the console.
 
 ```
 // Logger middleware -> use winston as logger (logging.ts with config)
-app.use(logger(winston));
+setupLogging(app);
 ```
 
 # Authentication - Security
@@ -412,7 +375,6 @@ app.use(function(ctx, next){
 
 If you want to authenticate from the API, and you fancy the idea of an auth provider like Auth0, have a look at [jsonwebtoken — JSON Web Token signing and verification](https://github.com/auth0/node-jsonwebtoken)
 
-
 ## CORS
 This boilerplate uses @koa/cors, a simple CORS middleware for koa. If you are not sure what this is about, click [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 
@@ -421,7 +383,6 @@ This boilerplate uses @koa/cors, a simple CORS middleware for koa. If you are no
 app.use(cors());
 ```
 Have a look at [Official @koa/cors docs](https://github.com/koajs/cors) in case you want to specify 'origin' or 'allowMethods' properties.
-
 
 ## Helmet
 This boilerplate uses koa-helmet, a wrapper for helmet to work with koa. It provides important security headers to make your app more secure by default. 
@@ -435,7 +396,6 @@ app.use(helmet());
 
 Have a look at [Official koa-helmet docs](https://github.com/venables/koa-helmet) in case you want to customize which security middlewares are enabled.
 
-
 # Dependencies
 Dependencies are managed through `package.json`.
 In that file you'll find two sections:
@@ -443,19 +403,17 @@ In that file you'll find two sections:
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
-| dotenv                          | Loads environment variables from .env file.                           |
+| config                          | Loads config variables from .yml file.                                |
 | koa                             | Node web framework.                                                   |
 | koa-bodyparser                  | A bodyparser for koa.                                                 |
 | koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
 | koa-helmet                      | Wrapper for helmet, important security headers to make app more secure| 
 | @koa/cors                       | Cross-Origin Resource Sharing(CORS) for koa                           |
-| pg                              | PostgreSQL driver, needed for the ORM.                                |
+| mongoose                        | MongoDB ODM.                                                          |
 | reflect-metadata                | Used by typeORM to implement decorators.                              |
-| typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
-| pg-connection-string            | Parser for database connection string.                                |
 | koa-swagger-decorator           | using decorator to automatically generate swagger doc for koa-router. |
 | cron                            | Register cron jobs in node.                                           |
 
@@ -471,46 +429,3 @@ In that file you'll find two sections:
 | shelljs                         | Portable Unix shell commands for Node.js                              |
 
 To install or update these dependencies you can use `npm install` or `npm update`.
-
-
-## Changelog
-
-### 1.6.0
- - CI migrated from Travis to Github actions
- - cron dependency -> register cron jobs
- - Node app dockerized -> now is directly pushed as a docker image to Heroku from CI, not using any webhook
- - Added postman integration tests, executed from Github actions CI using Newman
- - Added locust load tests, executed from Github actions CI
- - PRs merged: [47](https://github.com/javieraviles/node-typescript-koa-rest/pull/47), [48](https://github.com/javieraviles/node-typescript-koa-rest/pull/48) and [49](https://github.com/javieraviles/node-typescript-koa-rest/pull/49). Thanks to everybody!
-
-### 1.5.0
- - koa-swagger-decorator -> generate [swagger docs](https://node-typescript-koa-rest.herokuapp.com/swagger-html) with decorators in the endpoints
- - Split routes into protected and unprotected. Hello world + swagger docs are not proteted by jwt
- - some dependencies have been updated
-
-### 1.4.2
- - Fix -> `npm run watch-server` is now working properly live-reloading changes in the code [Issue 39](https://github.com/javieraviles/node-typescript-koa-rest/issues/39).
- - Fix -> Logging levels were not correctly mapped. Thanks to @atamano for the PR [Pull Request 35](https://github.com/javieraviles/node-typescript-koa-rest/pull/35)
- - Some code leftovers removed
-
-### 1.4.1
-- Fix -> After updating winston to 3.0.0, it was throwing an error when logging errors into file
-- Fix -> Config in config.ts wasn't implementing IConfig interface
-
-### 1.4.0
-- Dotenv lib updated, no changes needed (they are dropping node4 support)
-- Class-validator lib updated, no chages needed (cool features added like IsPhoneNumber or custom context for decorators)
-- Winston lib updated to 3.0.0, some amendments needed to format the console log. Removed the @types as Winston now supports Typescript natively!
-- Some devDependencies updated as well
-
-### 1.3.0
-- CORS added
-- Syntax full REST
-- Some error handling improvement
-
-### 1.2.0
-- Heroku deployment added
-
-### 1.1.0
-- Added Helmet for security
-- Some bad practices await/async fixed

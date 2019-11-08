@@ -1,15 +1,16 @@
-import { Length, IsEmail } from 'class-validator';
+import { Length, IsEmail, IsNotEmpty } from 'class-validator';
 
 export class User {
     id: string;
 
-    @Length(10, 80)
+    @Length(1, 80)
+    @IsNotEmpty()
     name: string;
 
     @Length(6, 20)
+    @IsNotEmpty()
     password: string;
 
-    @Length(10, 100)
     @IsEmail()
     email: string;
 
@@ -17,8 +18,7 @@ export class User {
 }
 
 export const userSchema = {
-    id: { type: 'string', required: true, example: '111111' },
-    name: { type: 'string', required: true, example: 'Javier' },
+    name: { type: 'string', required: true, example: 'admin' },
     password: { type: 'string', required: true, example: '123.com' },
-    email: { type: 'string', required: true, example: 'avileslopez.javier@gmail.com' }
+    email: { type: 'string', example: 'bngj.admin@gmail.com' }
 };

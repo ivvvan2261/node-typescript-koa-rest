@@ -3,9 +3,8 @@ import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
 import { default as UserService } from '../services/user.srvc';
 import { User, userSchema } from '../models/user';
-import * as uuid from 'uuid';
+import { CustomError } from '../util/customError';
 
-@responsesAll({ 200: { description: 'success' }, 400: { description: 'bad request' }, 401: { description: 'unauthorized, missing/wrong jwt token' } })
 @tagsAll(['User'])
 export default class UserController {
 
@@ -47,18 +46,14 @@ export default class UserController {
     public static async createUser(ctx: BaseContext) {
         // build up entity user to be saved
         const userToBeSaved: User = new User();
-        userToBeSaved.id = uuid.v1();
-        userToBeSaved.name = ctx.request.body.name;
-        userToBeSaved.password = ctx.request.body.password;
-        userToBeSaved.email = ctx.request.body.email;
+        Object.assign(userToBeSaved, ctx.validatedBody);
 
         // validate user entity
         const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors
 
         if (errors.length > 0) {
             // return BAD REQUEST status code and errors array
-            ctx.status = 400;
-            ctx.body = errors;
+            throw new CustomError('parameter error', errors);
         } else if (await UserService.findById(userToBeSaved.id)) {
             // return BAD REQUEST status code and email already exists error
             ctx.status = 400;
@@ -67,7 +62,7 @@ export default class UserController {
             // save the user contained in the POST body
             const user = await UserService.save(userToBeSaved);
             // return CREATED status code and updated user
-            ctx.status = 201;
+            ctx.status = 200;
             ctx.body = user;
         }
     }
@@ -82,9 +77,7 @@ export default class UserController {
         // update the user by specified id
         // build up entity user to be updated
         const userToBeUpdated: User = new User();
-        userToBeUpdated.id = ctx.params.id;
-        userToBeUpdated.name = ctx.request.body.name;
-        userToBeUpdated.email = ctx.request.body.email;
+        Object.assign(userToBeUpdated, ctx.validatedBody);
 
         // validate user entity
         const errors: ValidationError[] = await validate(userToBeUpdated); // errors is an array of validation errors
@@ -102,7 +95,7 @@ export default class UserController {
             // save the user contained in the PUT body
             const user = await UserService.save(userToBeUpdated);
             // return CREATED status code and updated user
-            ctx.status = 201;
+            ctx.status = 200;
             ctx.body = user;
         }
 
@@ -128,7 +121,7 @@ export default class UserController {
             // the user is there so can be removed
             await UserService.deleteOne(userToRemove.id);
             // return a NO CONTENT status code
-            ctx.status = 204;
+            ctx.status = 200;
         }
 
     }
