@@ -11,8 +11,8 @@ const protectedRouter = new SwaggerRouter();
 
 // Swagger endpoint
 protectedRouter.swagger({
-    title: 'node-typescript-koa-rest',
-    description: 'API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger.',
+    title: 'node-typescript-koa-starter',
+    description: 'API REST using NodeJS and KOA framework, typescript, class-validators. Middlewares JWT, CORS, MongoDB database, Winston Logger.',
     version: '1.5.0'
 });
 

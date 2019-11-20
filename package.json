@@ -1,7 +1,7 @@
 {
-  "name": "node-typescript-koa-rest",
+  "name": "node-typescript-koa-starter",
   "version": "1.6.0",
-  "description": "API REST using NodeJS and KOA framework, typescript, class-validators. Middlewares JWT, CORS, Winston Logger. Swagger API docs",
+  "description": "API REST using NodeJS and KOA framework, typescript, class-validators. Middlewares JWT, CORS, MongoDB database, Winston Logger. Swagger API docs",
   "main": "dist/server.js",
   "scripts": {
     "watch-node": "nodemon dist/server.js",
@@ -13,7 +13,7 @@
     "build": "npm run tslint && npm run build-ts && npm run copy-static-assets",
     "start": "npm run serve",
     "test:integration": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/heroku-dev.postman_environment.json",
-    "test:load": "locust --no-web -c 50 -r 10 -f loadtests/locustfile.py --run-time 1m --host=https://node-typescript-koa-rest.herokuapp.com"
+    "test:load": "locust --no-web -c 50 -r 10 -f loadtests/locustfile.py --run-time 1m --host=https://node-typescript-koa-starter.herokuapp.com"
   },
   "engines": {
     "node": "10.x.x",
@@ -21,7 +21,7 @@
   },
   "author": "Ivan",
   "license": "MIT",
-  "homepage": "https://github.com/ivan2261/node-typescript-koa-rest#readme",
+  "homepage": "https://github.com/ivan2261/node-typescript-koa-starter#readme",
   "keywords": [
     "typescript",
     "koa",
@@ -35,7 +35,7 @@
     "cors",
     "github actions"
   ],
-  "repository": "github:ivan2261/node-typescript-koa-rest",
+  "repository": "github:ivan2261/node-typescript-koa-starter",
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "@types/uuid": "^3.4.6",

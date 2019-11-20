@@ -4,14 +4,14 @@ The main purpose of this repository is to show a good end-to-end project setup a
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
-Through Github Actions CI, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
+Through Github Actions CI, this boilerplate is deployed [here](https://node-typescript-koa-starter.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
 
 HEADER (DEMO)
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
 ```
 
-AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
+AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-starter.herokuapp.com/swagger-html)
 
 When running the project locally with `watch-server`, the swagger docs will be deployed at: `http:localhost:3000/swagger-html`, and the bearer token for authorization should be as follows:
 
@@ -84,7 +84,7 @@ To build and run this app locally you will need a few things:
 # Getting Started
 - Clone the repository
 ```
-git clone --depth=1 https://github.com/javieraviles/node-typescript-koa-rest.git <project_name>
+git clone --depth=1 https://github.com/ivan2261/node-typescript-koa-starter.git <project_name>
 ```
 - Install dependencies
 ```
